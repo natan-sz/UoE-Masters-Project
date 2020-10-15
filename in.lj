@@ -1,0 +1,43 @@
+# Title: Silicon Dioxide LAMMPS input script
+# By: Natan Szczepaniak
+
+# First input script which uses SIMPLE-NN generated potential
+# to simulate Silicon Dioxide.
+
+
+# 1) Setting up the simulation box
+
+units		metal		# units
+atom_style	atomic		# atoms are spheres
+dimension	3		# 3 dimensions
+boundary	p p p		# p - periodic boundaries 
+
+lattice sc 0.6
+region box block 0 10 0 10 0 10
+create_box 1 box
+
+# Create Si atoms
+create_atoms 1 box
+
+# Create O atoms
+create_atoms 2 box
+
+# 2) Define interparticle ineractions (SIMPLE NN potential)
+
+pair_style nn
+pair_coeff * * /home/lammps_input/potential Si O # "* *" means every type interacts with every type with following coeffs
+
+mass * 1.0
+
+# 3) List of Neighbours (Neighbor lists are recalculated 
+# each timestep.)
+neighbour 2.0 bin
+neigh_modify delay 10 every 1
+
+# 4) Define Simulation parameters (Temperature, Momentum, etc.)
+
+# 5) Final setup
+#   - Define starting particle velocity
+#   - Define timestep
+#   - Define output system properties (temp, energy, etc.)
+#   - Define simulation length
