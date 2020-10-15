@@ -58,3 +58,6 @@ fix 3 all nvt temp 300.0 300.0 0.01
 #   - Define timestep
 #   - Define output system properties (temp, energy, etc.)
 #   - Define simulation length
+
+velocity        all create 300 199085 mom no rot no
+
