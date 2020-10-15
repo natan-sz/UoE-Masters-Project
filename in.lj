@@ -12,9 +12,11 @@ atom_style	atomic		# atoms are spheres
 dimension	3		# 3 dimensions
 boundary	p p p		# p - periodic boundaries 
 
-lattice sc 0.6
-region box block 0 10 0 10 0 10
-create_box 1 box
+lattice sc 0.6			# sc - simple cubic
+				# 0.6 - density 
+
+region box block 0 10 0 10 0 10 # create a box of shape "block" (10x10)
+create_box 2 box		# create box of atoms of 2 types
 
 # Create Si atoms
 create_atoms 1 box
@@ -24,17 +26,20 @@ create_atoms 2 box
 
 # 2) Define interparticle ineractions (SIMPLE NN potential)
 
-pair_style nn
+pair_style nn			# SIMPLE-NN potential file (.cpp)
 pair_coeff * * /home/lammps_input/potential Si O # "* *" means every type interacts with every type with following coeffs
 
-mass * 1.0
+mass * 1.0			# Every atom has mass 1.0 (CHANGE)
 
 # 3) List of Neighbours (Neighbor lists are recalculated 
 # each timestep.)
-neighbour 2.0 bin
-neigh_modify delay 10 every 1
+
+neighbour 2.0 bin		# Neighbour list 2.0 Angstrom
+neigh_modify delay 10 every 1	# Update Neighbour list
 
 # 4) Define Simulation parameters (Temperature, Momentum, etc.)
+
+fix 3 all nvt temp 300.0 300.0 0.01
 
 # 5) Final setup
 #   - Define starting particle velocity
