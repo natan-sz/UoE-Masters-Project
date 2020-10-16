@@ -13,42 +13,112 @@ atom_style	atomic		# atoms are spheres
 dimension	3		# 3 dimensions
 boundary	p p p		# p - periodic boundaries
 
-lattice sc 0.6
-Lattice spacing in x,y,z = 0.6 0.6 0.6
-region box block 0 10 0 10 0 10
-create_box 2 box
-Created orthogonal box = (0 0 0) to (6 6 6)
-  1 by 2 by 2 MPI processor grid
+lattice sc 2.65 		# sc - simple cubic
+Lattice spacing in x,y,z = 2.65 2.65 2.65
+				# 0.6 - density
+
+region box block 0 10 0 10 0 10 # create a box of shape "block" (10x10)
+create_box 2 box		# create box of atoms of 2 types
+Created orthogonal box = (0 0 0) to (26.5 26.5 26.5)
+  1 by 1 by 2 MPI processor grid
 
 # Create Si atoms
 create_atoms 1 region box
 Created 1000 atoms
-  create_atoms CPU = 0.000580134 secs
+  create_atoms CPU = 0.00163445 secs
 
 # Create O atoms
-lattice sc 0.6 origin 0.3 0.3 0.3
-Lattice spacing in x,y,z = 0.6 0.6 0.6
+lattice sc 2.65 origin 0.3 0.3 0.3
+Lattice spacing in x,y,z = 2.65 2.65 2.65
 create_atoms 2 region box
 Created 1000 atoms
-  create_atoms CPU = 0.000359265 secs
+  create_atoms CPU = 0.000994459 secs
 
 # 2) Define interparticle ineractions (SIMPLE NN potential)
 
-pair_style nn
+pair_style nn			# SIMPLE-NN potential file (.cpp)
 pair_coeff * * /home/lammps_input/potential Si O # "* *" means every type interacts with every type with following coeffs
 
-mass * 1.0
+mass 1 28.0855			# Silicon mass 28.0855 grams/mol
+mass 2 15.998			# Oxygen mass 15.998 grams/mol
 
 # 3) List of Neighbours (Neighbor lists are recalculated
 # each timestep.)
-neighbor	2.0 bin
-neigh_modify	delay 10 every 1
+
+neighbor 2.0 bin		# Neighbour list 2.0 Angstrom
+
+# neigh_modify delay 100 every 10
+# neigh_modify delay 0 every 1 check yes page 500000 one 50000
 
 # 4) Define Simulation parameters (Temperature, Momentum, etc.)
+
+fix 3 all nvt temp 300.0 300.0 0.01
 
 # 5) Final setup
 #   - Define starting particle velocity
 #   - Define timestep
 #   - Define output system properties (temp, energy, etc.)
 #   - Define simulation length
-Total wall time: 0:00:00
+#
+#velocity        all create 300 199085 mom no rot no
+#
+#timestep	0.005
+#
+#thermo_style 	custom step temp etotal pe ke press vol density # All of the outputs to log
+#thermo 		10		# print at multiples of N
+#
+#run_style verlet
+#
+#run 200
+#
+# Output file
+
+dump		2 all custom 5 positions.lammpstrj id x y z vx vy vz
+dump_modify	2 sort id
+
+run 200
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 8
+  ghost atom cutoff = 8
+  binsize = 4, bins = 7 7 7
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair nn, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 5.545 | 5.545 | 5.545 Mbytes
+Step Temp E_pair E_mol TotEng Press 
+       0            0    -13574.13            0    -13574.13   -178121.12 
+     200    317.15514   -13922.893            0   -13840.943   -261789.08 
+Loop time of 2221.32 on 2 procs for 200 steps with 2000 atoms
+
+Performance: 0.008 ns/day, 3085.160 hours/ns, 0.090 timesteps/s
+100.0% CPU use with 2 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 2215.9     | 2216.2     | 2216.5     |   0.7 | 99.77
+Neigh   | 0.020276   | 0.020473   | 0.02067    |   0.1 |  0.00
+Comm    | 4.4527     | 4.7783     | 5.1039     |  14.9 |  0.22
+Output  | 0.27977    | 0.28148    | 0.2832     |   0.3 |  0.01
+Modify  | 0.0091504  | 0.0093929  | 0.0096355  |   0.3 |  0.00
+Other   |            | 0.007088   |            |       |  0.00
+
+Nlocal:    1000 ave 1000 max 1000 min
+Histogram: 2 0 0 0 0 0 0 0 0 0
+Nghost:    4632 ave 4632 max 4632 min
+Histogram: 2 0 0 0 0 0 0 0 0 0
+Neighs:    0 ave 0 max 0 min
+Histogram: 2 0 0 0 0 0 0 0 0 0
+FullNghs:  240000 ave 240000 max 240000 min
+Histogram: 2 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 480000
+Ave neighs/atom = 240
+Neighbor list builds = 1
+Dangerous builds = 0
+Total wall time: 0:37:12
