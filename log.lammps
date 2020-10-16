@@ -20,19 +20,19 @@ Lattice spacing in x,y,z = 2.65 2.65 2.65
 region box block 0 10 0 10 0 10 # create a box of shape "block" (10x10)
 create_box 2 box		# create box of atoms of 2 types
 Created orthogonal box = (0 0 0) to (26.5 26.5 26.5)
-  1 by 1 by 2 MPI processor grid
+  1 by 2 by 2 MPI processor grid
 
 # Create Si atoms
 create_atoms 1 region box
 Created 1000 atoms
-  create_atoms CPU = 0.00163445 secs
+  create_atoms CPU = 0.00441505 secs
 
 # Create O atoms
 lattice sc 2.65 origin 0.3 0.3 0.3
 Lattice spacing in x,y,z = 2.65 2.65 2.65
 create_atoms 2 region box
 Created 1000 atoms
-  create_atoms CPU = 0.000994459 secs
+  create_atoms CPU = 0.000441539 secs
 
 # 2) Define interparticle ineractions (SIMPLE NN potential)
 
@@ -73,10 +73,10 @@ fix 3 all nvt temp 300.0 300.0 0.01
 #
 # Output file
 
-dump		2 all custom 5 positions.lammpstrj id x y z vx vy vz
+dump		2 all custom 10 positions.lammpstrj id type x y z vx vy vz
 dump_modify	2 sort id
 
-run 200
+run 2000
 Neighbor list info ...
   update every 1 steps, delay 10 steps, check yes
   max neighbors/atom: 2000, page size: 100000
@@ -89,36 +89,36 @@ Neighbor list info ...
       pair build: full/bin/atomonly
       stencil: full/bin/3d
       bin: standard
-Per MPI rank memory allocation (min/avg/max) = 5.545 | 5.545 | 5.545 Mbytes
+Per MPI rank memory allocation (min/avg/max) = 4.997 | 4.997 | 4.997 Mbytes
 Step Temp E_pair E_mol TotEng Press 
        0            0    -13574.13            0    -13574.13   -178121.12 
-     200    317.15514   -13922.893            0   -13840.943   -261789.08 
-Loop time of 2221.32 on 2 procs for 200 steps with 2000 atoms
+    2000    303.04229   -14216.368            0   -14138.065    -96515.09 
+Loop time of 10134.2 on 4 procs for 2000 steps with 2000 atoms
 
-Performance: 0.008 ns/day, 3085.160 hours/ns, 0.090 timesteps/s
-100.0% CPU use with 2 MPI tasks x no OpenMP threads
+Performance: 0.017 ns/day, 1407.529 hours/ns, 0.197 timesteps/s
+99.7% CPU use with 4 MPI tasks x no OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 2215.9     | 2216.2     | 2216.5     |   0.7 | 99.77
-Neigh   | 0.020276   | 0.020473   | 0.02067    |   0.1 |  0.00
-Comm    | 4.4527     | 4.7783     | 5.1039     |  14.9 |  0.22
-Output  | 0.27977    | 0.28148    | 0.2832     |   0.3 |  0.01
-Modify  | 0.0091504  | 0.0093929  | 0.0096355  |   0.3 |  0.00
-Other   |            | 0.007088   |            |       |  0.00
+Pair    | 9877.3     | 9960.5     | 10007      |  50.6 | 98.29
+Neigh   | 0.089888   | 0.093327   | 0.099715   |   1.2 |  0.00
+Comm    | 125.65     | 172.38     | 255.64     | 384.3 |  1.70
+Output  | 0.80781    | 0.82653    | 0.84406    |   1.5 |  0.01
+Modify  | 0.2612     | 0.28009    | 0.28735    |   2.1 |  0.00
+Other   |            | 0.1006     |            |       |  0.00
 
-Nlocal:    1000 ave 1000 max 1000 min
-Histogram: 2 0 0 0 0 0 0 0 0 0
-Nghost:    4632 ave 4632 max 4632 min
-Histogram: 2 0 0 0 0 0 0 0 0 0
+Nlocal:    500 ave 508 max 489 min
+Histogram: 1 0 0 1 0 0 0 0 0 2
+Nghost:    3456.75 ave 3487 max 3428 min
+Histogram: 1 1 0 0 0 0 0 1 0 1
 Neighs:    0 ave 0 max 0 min
-Histogram: 2 0 0 0 0 0 0 0 0 0
-FullNghs:  240000 ave 240000 max 240000 min
-Histogram: 2 0 0 0 0 0 0 0 0 0
+Histogram: 4 0 0 0 0 0 0 0 0 0
+FullNghs:  115092 ave 117532 max 111405 min
+Histogram: 1 0 0 0 1 0 0 0 0 2
 
-Total # of neighbors = 480000
-Ave neighs/atom = 240
-Neighbor list builds = 1
+Total # of neighbors = 460370
+Ave neighs/atom = 230.185
+Neighbor list builds = 10
 Dangerous builds = 0
-Total wall time: 0:37:12
+Total wall time: 2:48:59
