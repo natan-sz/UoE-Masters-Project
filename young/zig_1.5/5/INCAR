@@ -1,0 +1,21 @@
+ SYSTEM =  gr
+   NWRITE = 2       : verbosity
+   PREC   = accurate : accuracy
+   NELM   = 100      : maximum number of SCF iterations
+   NELMIN = 5       : minimal number of SCF iterations 
+   NELMDL = -3      : number of non-SCF iterations
+   EDIFF  = 1E-10    : criterion for SCF convergence (eV)
+   ISMEAR = 0       : Methfessel-Paxton smearing
+   SIGMA  = 0.05     : sigma for smearing (eV)
+   LWAVE  = .False.  : do not write wave function
+   LCHARG = .False.
+   ALGO = FAST.
+   ENCUT = 2000.0
+   NPAR = 4
+    
+ Ionic Relaxation
+   NSW    = 400        :  maximum number of ionic steps
+   EDIFFG = -1.0E-6  :  maximal residual force in eV/Ang
+   IBRION = 1        :  quasi-Newton optimization
+   ISIF   = 2        :   
+   
