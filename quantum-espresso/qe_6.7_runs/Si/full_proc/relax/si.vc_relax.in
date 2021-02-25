@@ -1,0 +1,29 @@
+&control
+    calculation = 'vc-relax'
+    prefix = 'si'
+    outdir = './outdir'
+    pseudo_dir = '/home/natan/mphys/qe_pseudos'
+    etot_conv_thr = 1e-5							! Energy convergence threshold
+    forc_conv_thr = 1e-4							! Force Convergence Threshold
+/
+&system
+    ibrav=2, celldm(1) =14,							! FCC Lattice / 14 put as a placeholder for it to converge to 
+    nat=2, ntyp=1,									
+    ecutwfc=30										! Cutoff Kinetic Energy
+/
+&electrons
+    conv_thr=1e-7									! Convergence for electrons SC (Precision)
+/
+&ions
+/
+&cell
+    cell_dofree='ibrav'								! Which part of unit cell to relax
+/
+ATOMIC_SPECIES
+ Si  28.0855  Si.pbe-n-rrkjus_psl.1.0.0.UPF
+
+ATOMIC_POSITIONS (alat)
+ Si 0.00 0.00 0.00 0 0 0 
+ Si 0.25 0.25 0.25 0 0 0
+K_POINTS (automatic)
+  4 4 4 0 0 0

@@ -1,0 +1,23 @@
+&control
+    calculation = 'scf'							!Self Consistency Calculation
+    restart_mode='from_scratch'					!From beginning
+    prefix = 'si'								!Name
+    outdir = './outdir'							!Output directory
+    pseudo_dir = '/home/natan/mphys/qe_pseudos'	!Pseudopotential directory
+/
+&system
+    ibrav=2, celldm(1) =10.410909236,			! FCC Lattice / Crystal Constant from relaxation
+    nat=2, ntyp=1,								! 2 atoms per lattice, 1 type of atoms
+    ecutwfc=50									! Cut off kinetic energy
+/
+&electrons
+    conv_thr=1e-8								! Convergence Threshold for SCF
+/
+ATOMIC_SPECIES
+ Si  28.0855  Si.pbe-n-rrkjus_psl.1.0.0.UPF		! Pseudo Potential
+
+ATOMIC_POSITIONS (alat)							! Positions
+ Si 0.00 0.00 0.00
+ Si 0.25 0.25 0.25
+K_POINTS (automatic)							! K Points
+  8 8 8 0 0 0
